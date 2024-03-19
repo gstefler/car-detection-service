@@ -1,0 +1,8 @@
+services:
+  detection-service:
+    build: 
+      context: ./service
+      dockerfile: Dockerfile
+    volumes:
+      - ./out:/app/out
+    image: detection-service

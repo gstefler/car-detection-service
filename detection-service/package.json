@@ -1,0 +1,15 @@
+{
+  "name": "tensorflow",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "@tensorflow-models/coco-ssd": "^2.2.3",
+    "@tensorflow/tfjs-node": "^4.17.0",
+    "canvas": "^2.11.2",
+    "jpeg-js": "^0.4.4"
+  }
+}
