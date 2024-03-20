@@ -1,8 +1,31 @@
+networks:
+  service-network:
+    driver: bridge
+
 services:
-  detection-service:
-    build: 
-      context: ./service
+  client:
+    build:
+      context: ./client
       dockerfile: Dockerfile
-    volumes:
-      - ./out:/app/out
+    image: client
+    environment:
+      - API_URL=http://detection-service:5000/
+    ports:
+        - "8080:8080"
+    networks:
+      - service-network
+  detection-service:
+    build:
+      context: ./detection-service
+      dockerfile: Dockerfile
     image: detection-service
+    ports:
+      - "5000:5000"
+    networks:
+      - service-network
+    depends_on:
+      - db
+  db:
+    image: redis
+    networks:
+      - service-network
