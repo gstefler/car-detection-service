@@ -100,58 +100,6 @@ app.post('/detect', async (req, res) => {
 	res.status(201).send(imageData)
 })
 
-// app.post('/detect', upload.single('image'), async (req, res) => {
-// 	if (!req.file) {
-// 		return res.status(400).send('No file uploaded.')
-// 	}
-//
-// 	const uploadedAt = new Date().toISOString()
-// 	const fileName = req.file.filename
-// 	const image = fs.readFileSync(`./content/${fileName}`)
-// 	const rawImageData = jpeg.decode(image, {
-// 		useTArray: true,
-// 	})
-//
-// 	const model = await cocoSsd.load()
-//
-// 	let predictions = await model.detect(rawImageData)
-// 	const createdAt = new Date().toISOString()
-//
-// 	const canvas = createCanvas(rawImageData.width, rawImageData.height)
-// 	const ctx = canvas.getContext('2d')
-//
-// 	const imageDataCanvas = ctx.createImageData(rawImageData.width, rawImageData.height)
-// 	imageDataCanvas.data.set(rawImageData.data)
-//
-// 	ctx.putImageData(imageDataCanvas, 0, 0)
-//
-// 	ctx.strokeStyle = 'red'
-// 	ctx.lineWidth = 3
-//
-// 	predictions = predictions.filter(p => p.class === 'car')
-// 	const numberOfCars = predictions.length
-//
-// 	predictions.forEach(p => {
-// 		ctx.beginPath()
-// 		ctx.rect(p.bbox[0], p.bbox[1], p.bbox[2], p.bbox[3])
-// 		ctx.stroke()
-// 	})
-//
-//
-// 	const buffer = canvas.toBuffer('image/jpeg')
-// 	const imageName = uuidv4() + '.jpg'
-//
-// 	fs.writeFileSync(`./content/${imageName}`, buffer)
-//
-// 	const imageData = {
-// 		originalFileName: fileName, annotatedFileName: imageName, numberOfCars, uploadedAt, createdAt,
-// 	}
-//
-// 	await client.set(imageName, JSON.stringify(imageData))
-//
-// 	res.status(201).send(imageData)
-// })
-
 app.listen(PORT, () => {
 	console.log(`service on ${PORT}`)
 })
