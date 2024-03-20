@@ -3,10 +3,9 @@ export default defineNuxtConfig({
 	modules: [
 		'@nuxtjs/tailwindcss',
 	],
-	runtimeConfig: {
-		public: {
-			API_URL: process.env.API_URL || 'http://localhost:5000/',
-		},
-	},
+	// runtimeConfig: {
+	// 	API_URL: process.env.API_URL || 'localhost',
+	// 	API_PORT: process.env.API_PORT || '5000',
+	// },
 	devtools: { enabled: false },
 })
