@@ -1,4 +1,4 @@
-import { chownSync, existsSync, mkdirSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 
 export default defineEventHandler(async (event) => {
 	const API_URL = process.env.API_URL || 'localhost'
@@ -9,27 +9,25 @@ export default defineEventHandler(async (event) => {
 
 	const URI = 'http://' + API_URL + ':' + API_PORT + '/detect'
 
-	const response = await $fetch(URI, {
+	const response = await $fetch<{
+		image: string
+		metadata: {
+			label: string
+			annotatedFileName: string
+			numberOfCars: number
+			uploadedAt: string
+			createdAt: string
+		}
+	}>(URI, {
 		method: 'POST',
-		body: JSON.stringify({ image: imageBase64 }),
+		body: { image: imageBase64, label: body.label },
 	})
 
-	// @ts-ignore
-	const annotatedFileName = response['annotatedFileName']
-
-	const downloadURI =
-		'http://' + API_URL + ':' + API_PORT + '/content/' + annotatedFileName
-
-	const fileBuffer = await $fetch(downloadURI, {
-		method: 'GET',
-		responseType: 'arrayBuffer',
-	})
-	const filePath = 'data/' + annotatedFileName
+	const filePath = 'data/' + response.metadata.annotatedFileName
 
 	if (!existsSync('data')) mkdirSync('data')
 
-	// @ts-ignore
-	writeFileSync(filePath, Buffer.from(fileBuffer))
+	writeFileSync(filePath, Buffer.from(response.image, 'base64'))
 
-	return response
+	return response.metadata
 })
