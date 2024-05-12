@@ -38,6 +38,12 @@ jobs:
         run: |
           docker push ${{ env.DOCKERHUB_USERNAME }}/${{ matrix.app }}:${{ github.sha }}
 
+  update-values:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Update values.yaml
         run: |
           cd helm
