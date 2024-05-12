@@ -50,9 +50,6 @@ jobs:
           cd helm
           sed -i 's|APP_VERSION:.*|APP_VERSION: '${{ github.sha }}'|' values.yaml
 
-      - name: Print values.yaml
-        run: cat helm/values.yaml
-
       - name: Commit changes
         run: |
           git config --global user.name 'GitHub Actions'
