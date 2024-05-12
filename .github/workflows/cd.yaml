@@ -26,7 +26,7 @@ jobs:
     outputs:
       registry: ${{ env.DOCKERHUB_USERNAME }}
 
-  build-and-push:
+  build-and-deploy:
     needs: login
     runs-on: ubuntu-latest
     strategy:
@@ -36,10 +36,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Build and Push Docker image
+      - name: Build Docker image
         run: |
           cd ${{ matrix.app }}
           docker build -t ${{ env.DOCKERHUB_USERNAME }}/${{ matrix.app }}:${{ github.sha }} .
+
+      - name: Push Docker image
+        run: |
           docker push ${{ env.DOCKERHUB_USERNAME }}/${{ matrix.app }}:${{ github.sha }}
 
       - name: Update values.yaml
