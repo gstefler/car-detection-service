@@ -25,7 +25,7 @@ async function getDetections() {
 const RMQ_USER = 'user'
 const RMQ_PASS = 'password'
 
-const rabbitUrl = `amqp://${RMQ_USER}:${RMQ_PASS}@localhost:5672`
+const rabbitUrl = `amqp://${RMQ_USER}:${RMQ_PASS}@rabbitmq:5672`
 
 const exchange = 'work-done'
 
