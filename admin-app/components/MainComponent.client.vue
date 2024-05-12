@@ -5,7 +5,8 @@ const filter = ref('')
 
 const filtered = computed(() => {
 	if (!filter.value) return history
-	return history.filter((entry) =>
+	if (!Array.isArray(history.value)) return []
+	return history.value.filter((entry: any) =>
 		entry.label.toLowerCase().includes(filter.value.toLowerCase())
 	)
 })
@@ -44,8 +45,8 @@ useWebSocket('ws://localhost:4000/api/ws', {
 				<th class="px-2 py-1">Number of cars</th>
 			</tr>
 			<tr v-for="entry in filtered">
-				<td class="px-2 py-1">{{ entry.label }}</td>
-				<td class="px-2 py-1">{{ entry.numberOfCars }}</td>
+				<td class="px-2 py-1">{{ (entry as any).label }}</td>
+				<td class="px-2 py-1">{{ (entry as any).numberOfCars }}</td>
 			</tr>
 		</table>
 	</div>
