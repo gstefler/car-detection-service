@@ -23,8 +23,6 @@ jobs:
         with:
           username: ${{ env.DOCKERHUB_USERNAME }}
           password: ${{ env.DOCKERHUB_KEY }}
-    outputs:
-      registry: ${{ env.DOCKERHUB_USERNAME }}
 
   build-and-deploy:
     needs: login
