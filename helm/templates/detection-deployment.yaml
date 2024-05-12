@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: detection
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: detection
+  template:
+    metadata:
+      labels:
+        app: detection
+    spec:
+      containers:
+        - name: detection
+          image: docker.io/broga/detection-app:{{ .Values.env.APP_VERSION }}
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: image-storage
+              mountPath: /app/images
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: '250m'
+              memory: '100Mi'
+            limits:
+              cpu: '500m'
+              memory: '200Mi'
+      volumes:
+        - name: image-storage
+          persistentVolumeClaim:
+            claimName: shared-storage-claim

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: upload
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: upload
+  template:
+    metadata:
+      labels:
+        app: upload
+    spec:
+      containers:
+        - name: upload
+          image: docker.io/broga/upload-app:{{ .Values.env.APP_VERSION }}
+          ports:
+            - containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /api/healthz
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          volumeMounts:
+            - name: image-storage
+              mountPath: /app/images
+          resources:
+            requests:
+              cpu: '250m'
+              memory: '100Mi'
+            limits:
+              cpu: '500m'
+              memory: '200Mi'
+      volumes:
+        - name: image-storage
+          persistentVolumeClaim:
+            claimName: shared-storage-claim
